@@ -16,7 +16,8 @@
 	<description>Demo project for Spring Boot WebFlux</description>
   <modules>
     <module>reactive-programming-using-reactor</module>
-  </modules>
+		<module>movie-info-service</module>
+	</modules>
   <properties>
 		<java.version>17</java.version>
 	</properties>
