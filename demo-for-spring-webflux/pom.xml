@@ -11,9 +11,13 @@
 	<groupId>com.kentisthebest</groupId>
 	<artifactId>demo-for-spring-webflux</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo-for-spring-webflux</name>
+  <packaging>pom</packaging>
+  <name>demo-for-spring-webflux</name>
 	<description>Demo project for Spring Boot WebFlux</description>
-	<properties>
+  <modules>
+    <module>reactive-programming-using-reactor</module>
+  </modules>
+  <properties>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
