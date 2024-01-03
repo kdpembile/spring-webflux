@@ -14,8 +14,6 @@ COPY ./reactive-programming-using-reactor/pom.xml ./reactive-programming-using-r
 COPY ./movie-info-service/src ./movie-info-service/src
 COPY ./reactive-programming-using-reactor/src ./reactive-programming-using-reactor/src
 
-CMD ["./mvnw", "clean", "package"]
+RUN ./mvnw dependency:resolve
 
-COPY ./movie-info-service/target/movie-info-service-0.0.1-SNAPSHOT.jar ./
-
-CMD ["java", "-jar", "movie-info-service-0.0.1-SNAPSHOT.jar"]
+CMD ["./mvnw", "-f", "./movie-info-service", "spring-boot:run"]
