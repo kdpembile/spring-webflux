@@ -1,7 +1,8 @@
-package com.kentisthebest.controllers;
+package com.kentisthebest.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.kentisthebest.controllers.FluxAndMonoController;
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
