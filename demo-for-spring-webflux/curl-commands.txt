@@ -1,0 +1,2 @@
+// curl command for movie-info POST http
+curl --location "http://localhost:3000/v1/movie-info" --header "Content-Type: application/json" --data "{\"name\": \"Back to the Future Part II\", \"year\": 1990, \"cast\": [ \"Christian Bale\", \"Tom Hardy\"], \"releaseDate\": \"1990-06-26\"}"
