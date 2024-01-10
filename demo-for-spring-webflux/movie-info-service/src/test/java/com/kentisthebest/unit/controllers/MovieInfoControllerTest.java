@@ -67,6 +67,84 @@ class MovieInfoControllerTest {
   }
 
   @Test
+  void addMovieInfo_whenNameIsBlank_thenReturnBadRequest() {
+    // given
+    var movieInfo = MovieInfo.builder()
+        .id(null)
+        .name("")
+        .year(1985)
+        .cast(List.of("Michael J. Fox", "Christopher Lloyd"))
+        .releaseDate(LocalDate.parse("1985-07-03"))
+        .build();
+
+    // when
+    when(movieInfoService.addMovieInfo(movieInfo))
+        .thenReturn(Mono.just(MovieInfo.builder()
+            .id("mockId")
+            .name("Back to the future")
+            .year(1985)
+            .cast(List.of("Michael J. Fox", "Christopher Lloyd"))
+            .releaseDate(LocalDate.parse("1985-07-03"))
+            .build()));
+
+    // then
+    webTestClient.post()
+        .uri("/v1/movie-info")
+        .bodyValue(movieInfo)
+        .exchange()
+        .expectStatus()
+        .isBadRequest()
+        .expectBody(String.class)
+        .consumeWith(stringEntityExchangeResult -> {
+          var responseBody = stringEntityExchangeResult.getResponseBody();
+
+          System.out.println("responseBody: " + responseBody);
+
+          assert responseBody != null;
+          assertEquals("movieInfo.name must be present", responseBody);
+        });
+  }
+
+  @Test
+  void addMovieInfo_whenCastIsBlank_thenReturnBadRequest() {
+    // given
+    var movieInfo = MovieInfo.builder()
+        .id(null)
+        .name("Back to the future")
+        .year(1985)
+        .cast(List.of(""))
+        .releaseDate(LocalDate.parse("1985-07-03"))
+        .build();
+
+    // when
+    when(movieInfoService.addMovieInfo(movieInfo))
+        .thenReturn(Mono.just(MovieInfo.builder()
+            .id("mockId")
+            .name("Back to the future")
+            .year(1985)
+            .cast(List.of("Michael J. Fox", "Christopher Lloyd"))
+            .releaseDate(LocalDate.parse("1985-07-03"))
+            .build()));
+
+    // then
+    webTestClient.post()
+        .uri("/v1/movie-info")
+        .bodyValue(movieInfo)
+        .exchange()
+        .expectStatus()
+        .isBadRequest()
+        .expectBody(String.class)
+        .consumeWith(stringEntityExchangeResult -> {
+          var responseBody = stringEntityExchangeResult.getResponseBody();
+
+          System.out.println("responseBody: " + responseBody);
+
+          assert responseBody != null;
+          assertEquals("movieInfo.cast must be present", responseBody);
+        });
+  }
+
+  @Test
   void getAllMovieInfo() {
     // given
     var movieInfo = List.of(new MovieInfo(null, "Batman Begins",

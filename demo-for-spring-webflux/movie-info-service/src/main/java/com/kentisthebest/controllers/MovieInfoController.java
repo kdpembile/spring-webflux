@@ -2,6 +2,7 @@ package com.kentisthebest.controllers;
 
 import com.kentisthebest.models.MovieInfo;
 import com.kentisthebest.services.MovieInfoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +38,7 @@ public class MovieInfoController {
 
   @PostMapping(path = "/movie-info")
   @ResponseStatus(HttpStatus.CREATED)
-  public Mono<MovieInfo> addMovieInfo(@RequestBody MovieInfo movieInfo) {
+  public Mono<MovieInfo> addMovieInfo(@RequestBody @Valid MovieInfo movieInfo) {
     return movieInfoService.addMovieInfo(movieInfo).log();
   }
 
