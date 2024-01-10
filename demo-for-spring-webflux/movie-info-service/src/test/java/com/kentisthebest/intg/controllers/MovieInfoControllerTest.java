@@ -117,6 +117,19 @@ class MovieInfoControllerTest {
   }
 
   @Test
+  void getMovieInfoById_notFound() {
+    // given
+    // when
+    webTestClient.get()
+        .uri("/v1/movie-info/{id}", "def")
+        .exchange()
+        .expectStatus()
+        .isNotFound();
+
+    // then
+  }
+
+  @Test
   void updateMovieInfo() {
     // given
     // when
@@ -142,6 +155,26 @@ class MovieInfoControllerTest {
 
           assertEquals("Back to the future", updatedMovieInfo.getName());
         });
+
+    // then
+  }
+
+  @Test
+  void updateMovieInfo_notFound() {
+    // given
+    // when
+    webTestClient.put()
+        .uri("/v1/movie-info/{id}", "def")
+        .bodyValue(MovieInfo.builder()
+            .id(null)
+            .name("Back to the future")
+            .year(1985)
+            .cast(List.of("Michael J. Fox", "Christopher Lloyd"))
+            .releaseDate(LocalDate.parse("1985-07-03"))
+            .build())
+        .exchange()
+        .expectStatus()
+        .isNotFound();
 
     // then
   }

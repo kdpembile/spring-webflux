@@ -4,6 +4,7 @@ import com.kentisthebest.models.MovieInfo;
 import com.kentisthebest.services.MovieInfoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +33,11 @@ public class MovieInfoController {
   }
 
   @GetMapping(path = "/movie-info/{id}")
-  public Mono<MovieInfo> getMovieInfoById(@PathVariable String id) {
-    return movieInfoService.getMovieInfoById(id).log();
+  public Mono<ResponseEntity<MovieInfo>> getMovieInfoById(@PathVariable String id) {
+    return movieInfoService.getMovieInfoById(id)
+        .map(movieInfo -> ResponseEntity.ok().body(movieInfo))
+        .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
+        .log();
   }
 
   @PostMapping(path = "/movie-info")
@@ -43,8 +47,11 @@ public class MovieInfoController {
   }
 
   @PutMapping(path = "/movie-info/{id}")
-  public Mono<MovieInfo> updateMovieInfo(@RequestBody MovieInfo updateMovieInfo, @PathVariable String id) {
-    return movieInfoService.updateMovieInfo(updateMovieInfo, id).log();
+  public Mono<ResponseEntity<MovieInfo>> updateMovieInfo(@RequestBody MovieInfo updateMovieInfo, @PathVariable String id) {
+    return movieInfoService.updateMovieInfo(updateMovieInfo, id)
+        .map(movieInfo -> ResponseEntity.ok().body(movieInfo))
+        .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
+        .log();
   }
 
   @DeleteMapping(path = "/movie-info/{id}")
