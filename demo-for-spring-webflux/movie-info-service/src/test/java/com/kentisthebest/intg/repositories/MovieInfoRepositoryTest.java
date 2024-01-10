@@ -31,7 +31,7 @@ class MovieInfoRepositoryTest {
         new MovieInfo("abc", "Dark Knight Rises",
             2012, List.of("Christian Bale", "Tom Hardy"), LocalDate.parse("2012-07-20")));
 
-    // blocking for saving was used because when we call findall(), we might not fetch any data
+    // blocking for saving was used because when we call findAll(), we might not fetch any data
     // blocking calls are only allowed in test cases
     movieInfoRepository.saveAll(movieInfo)
         .blockLast();
@@ -124,6 +124,30 @@ class MovieInfoRepositoryTest {
     // then
     StepVerifier.create(movieInfo)
         .expectNextCount(2)
+        .verifyComplete();
+  }
+
+  @Test
+  void findByYear() {
+    // given
+    // when
+    var movieInfo = movieInfoRepository.findByYear(2005).log();
+
+    // then
+    StepVerifier.create(movieInfo)
+        .expectNextCount(1)
+        .verifyComplete();
+  }
+
+  @Test
+  void findByName() {
+    // given
+    // when
+    var movieInfo = movieInfoRepository.findByName("Batman Begins").log();
+
+    // then
+    StepVerifier.create(movieInfo)
+        .expectNextCount(1)
         .verifyComplete();
   }
 

@@ -3,6 +3,7 @@ package com.kentisthebest.controllers;
 import com.kentisthebest.models.MovieInfo;
 import com.kentisthebest.services.MovieInfoService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @RestController
 @RequestMapping("/v1")
 public class MovieInfoController {
@@ -28,7 +31,15 @@ public class MovieInfoController {
   }
 
   @GetMapping(path = "/movie-info")
-  public Flux<MovieInfo> getAllMovieInfo() {
+  public Flux<MovieInfo> getAllMovieInfo(
+      @RequestParam(value = "year", required = false) Integer year) {
+
+    log.info("Year is: {}", year);
+
+    if (year != null) {
+      return movieInfoService.getMovieInfoByYear(year).log();
+    }
+
     return movieInfoService.getAllMovieInfo().log();
   }
 

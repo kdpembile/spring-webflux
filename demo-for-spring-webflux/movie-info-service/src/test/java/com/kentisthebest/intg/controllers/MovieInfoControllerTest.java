@@ -15,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -188,6 +190,25 @@ class MovieInfoControllerTest {
         .exchange()
         .expectStatus()
         .isNoContent();
+
+    // then
+  }
+
+  @Test
+  void getMovieInfoByYear() {
+    // given
+    // when
+    var uri = UriComponentsBuilder.fromUriString("/v1/movie-info")
+        .queryParam("year", 2005)
+        .buildAndExpand().toUri();
+
+    webTestClient.get()
+        .uri(uri)
+        .exchange()
+        .expectStatus()
+        .is2xxSuccessful()
+        .expectBodyList(MovieInfo.class)
+        .hasSize(1);
 
     // then
   }
