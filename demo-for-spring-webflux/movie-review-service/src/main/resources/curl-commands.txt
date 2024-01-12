@@ -1,0 +1,15 @@
+// get reviews
+curl --location --request GET "http://localhost:3001/v1/reviews"
+curl --location --request GET "http://localhost:3001/v1/reviews"
+curl --location --request GET "http://localhost:3001/v1/reviews?movieInfoId=1"
+
+// save review
+curl --location --request POST "http://localhost:3001/v1/reviews" --header "Content-Type: application/json" --data "{ \"movieInfoId\": 1, \"comment\": \"Average movie\", \"rating\": 7.0 }"
+curl --location --request POST "http://localhost:3001/v1/reviews" --header "Content-Type: application/json" --data "{ \"movieInfoId\": 1, \"comment\": \"Awesome movie\", \"rating\": 8.5 }"
+curl --location --request POST "http://localhost:3001/v1/reviews" --header "Content-Type: application/json" --data "{ \"reviewId\": 1,\"movieInfoId\": 2, \"comment\": \"Excellent movie\", \"rating\": 9.0 }"
+
+// update review
+curl --location --request PUT "http://localhost:3001/v1/reviews/1" --header "Content-Type: application/json" --data "{ \"reviewId\": 1,\"movieInfoId\": 2, \"comment\": \"Excellent movie update\", \"rating\": 8.5 }"
+
+// delete review
+curl --location --request DELETE "http://localhost:3001/v1/reviews/1"
