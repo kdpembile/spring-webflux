@@ -5,9 +5,11 @@ services:
     ports:
       - "8080:3000"
     environment:
-      - PORT=3000
+      - MOVIE_INFO_SERVICE_PORT=3000
+      - MOVIE_REVIEW_SERVICE_PORT=3001
       - MONGODB_URI=mongodb://user:pass@mongo:27017/?authMechanism=SCRAM-SHA-1
-      - MONGODB_DATABASE=DEMO_SPRING_WEBFLUX
+      - MOVIE_INFO_SERVICE_MONGODB_DATABASE=movie_info
+      - MOVIE_REVIEW_SERVICE_MONGODB_DATABASE=movie_review
   mongo:
     image: mongo:latest
     environment:
