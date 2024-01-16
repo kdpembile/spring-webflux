@@ -139,6 +139,34 @@ class ReviewRouterTest {
   }
 
   @Test
+  void addReview_whenMovieInfoIdIsNotNullAndRatingIsNegative_thenReturnBadRequest() {
+    // given
+    var review = Review.builder()
+        .reviewId(null)
+        .movieInfoId(null)
+        .comment("Blockbuster Movie")
+        .rating(-9.0)
+        .build();
+
+    // when
+    when(movieReviewRepository.save(isA(Review.class)))
+        .thenReturn(Mono.just(Review.builder()
+            .reviewId("2")
+            .movieInfoId(1L)
+            .comment("Blockbuster Movie")
+            .rating(10.0)
+            .build()));
+
+    // then
+    webTestClient.post()
+        .uri("/v1/reviews")
+        .bodyValue(review)
+        .exchange()
+        .expectStatus()
+        .is5xxServerError();
+  }
+
+  @Test
   void updateReview() {
     // given
     var existingMovieReview = Review.builder()
