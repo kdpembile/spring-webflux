@@ -2,6 +2,7 @@ package com.kentisthebest.handlers;
 
 import com.kentisthebest.domains.Review;
 import com.kentisthebest.exceptions.ReviewDataException;
+import com.kentisthebest.exceptions.ReviewNotFoundException;
 import com.kentisthebest.repositories.MovieReviewRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -70,7 +71,10 @@ public class ReviewHandler {
 
   public Mono<ServerResponse> updateReview(ServerRequest request) {
     var reviewId = request.pathVariable("id");
+    // var message = "Review not found for the given review id: " + reviewId;
+
     var existingMovieReview = movieReviewRepository.findById(reviewId);
+        // .switchIfEmpty(Mono.error(new ReviewNotFoundException(message)));
 
     return existingMovieReview
         .flatMap(review ->
@@ -83,7 +87,7 @@ public class ReviewHandler {
                 })
                 .flatMap(movieReviewRepository::save)
                 .flatMap(savedReview -> ServerResponse.ok().bodyValue(savedReview))
-        );
+        ).switchIfEmpty(ServerResponse.notFound().build());
   }
 
   public Mono<ServerResponse> deleteReview(ServerRequest request) {

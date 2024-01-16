@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 
 import com.kentisthebest.domains.Review;
+import com.kentisthebest.exceptions.handlers.GlobalErrorHandler;
 import com.kentisthebest.handlers.ReviewHandler;
 import com.kentisthebest.repositories.MovieReviewRepository;
 import com.kentisthebest.routers.ReviewRouter;
@@ -21,7 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @WebFluxTest
-@ContextConfiguration(classes = {ReviewRouter.class, ReviewHandler.class})
+@ContextConfiguration(classes = {ReviewRouter.class, ReviewHandler.class, GlobalErrorHandler.class})
 @AutoConfigureWebTestClient
 class ReviewRouterTest {
 
@@ -163,7 +164,9 @@ class ReviewRouterTest {
         .bodyValue(review)
         .exchange()
         .expectStatus()
-        .is5xxServerError();
+        .isBadRequest()
+        .expectBody(String.class)
+        .isEqualTo("rating.movieInfoId : mut not be null,rating.negative : please pass a non-negative value");
   }
 
   @Test
